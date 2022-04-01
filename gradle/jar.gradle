@@ -1,0 +1,35 @@
+def modId = getRequiredProperty('mod_id')
+def modVersion = getRequiredProperty('version')
+def forgeVersion = getRequiredProperty('forge_version')
+def modName = getDefaultProperty('mod_name', modId)
+def modAuthor = getOptionalProperty('mod_author')
+def minecraftVersion = getRequiredProperty('minecraft_version_max')
+def mappingVersion = getRequiredProperty('parchment_mapping_version')
+def mixinId = getDefaultProperty('mixin_id', mod_id)
+
+jar {
+    archiveBaseName = "${modId}"
+    archiveVersion =  "${modVersion}"
+
+    manifest {
+        attributes([
+            'Timestamp': System.currentTimeMillis(),
+            'Built-On-Java': "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+
+            'Specification-Title': modId,
+            'Specification-Vendor': modAuthor,
+            'Specification-Version': modVersion,
+
+            'Implementation-Title': modName,
+            'Implementation-Vendor' : modAuthor,
+            'Implementation-Version': modVersion,
+            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+
+            'ModLoader': "forge-${forgeVersion}",
+            'Built-On-Minecraft': minecraftVersion,
+            'Build-On-Mapping': "parchment-${mappingVersion}",
+
+            'MixinConfigs': "${modId}.mixins.json"
+        ])
+    }
+}

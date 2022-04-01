@@ -1,0 +1,38 @@
+def getRequiredProperty(prop) {
+  prop = prop.toString()
+
+  if (project.hasProperty(prop)) {
+    return project.findProperty(prop).toString()
+  }
+
+  project.logger.error("The ${prop} property is required!")
+  throw new RuntimeException("The ${prop} property is required!")
+}
+
+def getDefaultProperty(prop, defaultValue) {
+  prop = prop.toString()
+
+  if (project.hasProperty(prop)) {
+    return project.findProperty(prop).toString()
+  }
+
+  project.logger.warn("Property ${prop} was not found. Defaulting to ${defaultValue}.")
+  return defaultValue
+}
+
+def getOptionalProperty(prop) {
+  prop = prop.toString()
+
+  if (project.hasProperty(prop)) {
+    return project.findProperty(prop).toString()
+  }
+
+  project.logger.warn("Property ${prop} was not found. Defaulting to empty.")
+  return ''
+}
+
+ext {
+  getDefaultProperty = this.&getDefaultProperty
+  getRequiredProperty = this.&getRequiredProperty
+  getOptionalProperty = this.&getOptionalProperty
+}

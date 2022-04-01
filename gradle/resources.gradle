@@ -1,0 +1,10 @@
+def mod
+
+processResources {
+    def buildProps = project.properties.clone()
+    buildProps.put('file', [jarVersion: project.version])
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand buildProps
+    }
+}

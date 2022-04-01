@@ -1,0 +1,42 @@
+apply from: 'gradle/propertyHelper.gradle'
+
+def javaVersion = getRequiredProperty('java_version')
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
+repositories {
+    mavenCentral()
+    
+    maven {
+    	name 'Jitpack'
+    	url "https://jitpack.io"
+    }
+}
+
+dependencies {
+
+    def deps = getOptionalProperty('compiled_deps').toString().split(",")
+    deps.each { libId ->
+        if (libId == '') return
+
+        def name = getRequiredProperty("${libId}_name")
+        def group = getRequiredProperty("${libId}_group")
+        def version = getRequiredProperty("${libId}_version")
+
+        project.logger.lifecycle("Dependency ${libId} added. \'${group}:${name}:${version}\'")
+        project.getDependencies().add('implementation', "${group}:${name}:${version}")
+    }
+
+    def testDeps = getOptionalProperty('runtime_deps').toString().split(",")
+    testDeps.each { libId ->
+        if (libId == '') return
+
+        def name = getRequiredProperty("${libId}_name")
+        def group = getRequiredProperty("${libId}_group")
+        def version = getRequiredProperty("${libId}_version")
+
+        project.logger.lifecycle("Runtime dependency ${libId} added. \'${group}:${name}:${version}\'")
+        project.getDependencies().add('runtimeOnly', "${group}:${name}:${version}")
+    }
+
+}

@@ -1,0 +1,124 @@
+buildscript {
+	repositories {
+        mavenCentral()
+
+		maven {
+			name 'Official Forge Maven'
+			url 'https://maven.minecraftforge.net'
+		}
+
+		maven {
+			name 'Sponge / Mixin Maven'
+			url 'https://repo.spongepowered.org/repository/maven-public'
+		}
+
+		maven {
+            name 'Official Parchment Maven'
+            url = 'https://maven.parchmentmc.org'
+        }
+	}
+
+	dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'org.parchmentmc', name: 'librarian', version: '1+'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+    }
+}
+
+apply plugin: net.minecraftforge.gradle.userdev.UserDevPlugin
+apply plugin: org.parchmentmc.librarian.forgegradle.LibrarianForgeGradlePlugin
+apply plugin: org.spongepowered.asm.gradle.plugins.MixinGradlePlugin
+apply from: 'gradle/propertyHelper.gradle'
+
+def modId = getRequiredProperty('mod_id')
+def modName = getDefaultProperty('mod_name', modId)
+def forgeVersion = getRequiredProperty('forge_version')
+def clientRunDir = getDefaultProperty('forge_client_dir', 'runClient')
+def serverRunDir = getDefaultProperty('forge_server_dir', 'runServer')
+def loggingLevel = getDefaultProperty('forge_log_level', 'debug')
+def loggingANSI = getDefaultProperty('forge_log_ansi', 'false').asBoolean()
+def mcVersion = getRequiredProperty('minecraft_version_max')
+
+def refmapFile = "${projectDir}/build/createSrgToMcp/output.srg"
+def mixin_id = getDefaultProperty('mixin_id', mod_id)
+def parchmentVersion = getRequiredProperty('parchment_mapping_version')
+
+jar.finalizedBy('reobfJar')
+
+minecraft {
+	mappings channel: 'parchment', version: parchmentVersion
+
+	runs {
+        client {
+            workingDirectory project.file(clientRunDir)
+            property 'forge.logging.console.level', loggingLevel
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', refmapFile
+            arg "-mixin.config=${mixin_id}.mixins.json"
+
+            if (loggingANSI) {
+                property 'terminal.ansi', 'true'
+            }
+
+            mods {
+                clientRun {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file(serverRunDir)
+            property 'forge.logging.console.level', loggingLevel
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', refmapFile
+            arg "-mixin.config=${mixin_id}.mixins.json"
+
+            mods {
+                serverRun {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${mcVersion}-${forgeVersion}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+task setupDebugRunConfigs() {
+    description = 'Creates basic configs used to debug mods in game'
+    dependsOn 'configServerProps'
+    dependsOn 'configEula'
+}
+
+task configServerProps(type: WriteProperties) {
+    description = 'Configures the server with default properties. Eg. Disables online mode.'
+    outputFile = file("${serverRunDir}/server.properties")
+
+    property('online-mode', 'false')
+    property('motd', "Testing server for ${modName}.")
+    property('server-ip', '')
+    property('server-port', '25565')
+    property('snooper-enabled', 'false')
+    property('spawn-protection', '0')
+    property('enable-command-block', 'true')
+
+    property('level-name', 'world')
+    property('level-seed', '')
+    property('level-type', 'default')
+}
+
+task configEula(type: WriteProperties) {
+    description = 'Automatically creates and agrees to the Mojang account EULA.'
+    outputFile = file("${serverRunDir}/eula.txt")
+    property 'eula', true
+
+    doLast {
+        project.logger.warn("You have agreed to Mojang's EULA! https://account.mojang.com/documents/minecraft_eula");
+    }
+}
