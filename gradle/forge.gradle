@@ -40,7 +40,7 @@ def loggingANSI = getDefaultProperty('forge_log_ansi', 'false').asBoolean()
 def mcVersion = getRequiredProperty('minecraft_version_max')
 
 def refmapFile = "${projectDir}/build/createSrgToMcp/output.srg"
-def mixin_id = getDefaultProperty('mixin_id', mod_id)
+def mixinId = getDefaultProperty('mixin_id', mod_id)
 def parchmentVersion = getRequiredProperty('parchment_mapping_version')
 
 jar.finalizedBy('reobfJar')
@@ -55,14 +55,14 @@ minecraft {
 
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', refmapFile
-            arg "-mixin.config=${mixin_id}.mixins.json"
+            arg "-mixin.config=${mixinId}.mixins.json"
 
             if (loggingANSI) {
                 property 'terminal.ansi', 'true'
             }
 
             mods {
-                clientRun {
+                "${modId}" {
                     source sourceSets.main
                 }
             }
@@ -74,15 +74,19 @@ minecraft {
 
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', refmapFile
-            arg "-mixin.config=${mixin_id}.mixins.json"
+            arg "-mixin.config=${mixinId}.mixins.json"
 
             mods {
-                serverRun {
+                "${modId}" {
                     source sourceSets.main
                 }
             }
         }
     }
+}
+
+mixin {
+    add sourceSets.main, "${mixinId}.mixins.json"
 }
 
 dependencies {

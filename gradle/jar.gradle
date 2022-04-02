@@ -7,8 +7,13 @@ def minecraftVersion = getRequiredProperty('minecraft_version_max')
 def mappingVersion = getRequiredProperty('parchment_mapping_version')
 def mixinId = getDefaultProperty('mixin_id', mod_id)
 
+java {
+    def javaVersion = getRequiredProperty('java_version')
+    toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
+}
+
 jar {
-    archiveBaseName = "${modId}"
+    archiveBaseName = "${modId}-forge"
     archiveVersion =  "${modVersion}"
 
     manifest {

@@ -1,12 +1,8 @@
 apply from: 'gradle/propertyHelper.gradle'
 
-def javaVersion = getRequiredProperty('java_version')
-sourceCompatibility = javaVersion
-targetCompatibility = javaVersion
-
 repositories {
     mavenCentral()
-    
+
     maven {
     	name 'Jitpack'
     	url "https://jitpack.io"

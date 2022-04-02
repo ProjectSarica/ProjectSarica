@@ -1,10 +1,11 @@
-def mod
+def modId = getRequiredProperty('mod_id')
+def mixins = "${modId}.mixins.json".toString()
 
 processResources {
     def buildProps = project.properties.clone()
     buildProps.put('file', [jarVersion: project.version])
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta', mixins]) {
         expand buildProps
     }
 }

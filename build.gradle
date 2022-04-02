@@ -2,6 +2,9 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply from: 'gradle/propertyHelper.gradle'
 
+version = getRequiredProperty('version')
+group = getRequiredProperty('group')
+
 apply from: 'gradle/dependencies.gradle'
 apply from: 'gradle/forge.gradle'
 apply from: 'gradle/jar.gradle'
