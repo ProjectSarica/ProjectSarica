@@ -2,8 +2,8 @@ package me.ci.project.sarica.registry;
 
 import java.util.function.Supplier;
 import me.ci.project.sarica.ProjectSarica;
-import me.ci.project.sarica.entities.npc.Npc;
-import me.ci.project.sarica.entities.npc.NpcRenderer;
+import me.ci.project.sarica.entities.npc.NPCEntity;
+import me.ci.project.sarica.entities.npc.NPCRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -23,8 +23,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public final class ModEntities
 {
-    public static final Lazy<EntityType<Npc>> NPC = entity("npc", EntityType.Builder
-        .of(Npc::new, EntityClassification.MISC)
+    public static final Lazy<EntityType<NPCEntity>> NPC = entity("npc", EntityType.Builder
+        .of(NPCEntity::new, EntityClassification.MISC)
         .sized(0.6f, 1.85f)
         .canSpawnFarFromPlayer());
 
@@ -70,7 +70,7 @@ public final class ModEntities
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers(FMLClientSetupEvent event)
     {
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.NPC.get(), NpcRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.NPC.get(), NPCRenderer::new);
     }
 
 

@@ -26,13 +26,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class NpcRenderer extends MobRenderer<Npc, NpcModel>
+public class NPCRenderer extends MobRenderer<NPCEntity, NPCModel>
 {
     private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft:textures/entity/steve.png");
 
-    public NpcRenderer(EntityRendererManager renderManager)
+
+    public NPCRenderer(EntityRendererManager renderManager)
     {
-        super(renderManager, new NpcModel(false), 0.3f);
+        super(renderManager, new NPCModel(false), 0.3f);
         this.addLayer(new BipedArmorLayer<>(this, new BipedModel<>(0.5F), new BipedModel<>(1.0F)));
         this.addLayer(new HeldItemLayer<>(this));
         this.addLayer(new ArrowLayer<>(this));
@@ -43,23 +44,23 @@ public class NpcRenderer extends MobRenderer<Npc, NpcModel>
 
 
     @Override
-    public ResourceLocation getTextureLocation(Npc entity)
+    public ResourceLocation getTextureLocation(NPCEntity entity)
     {
         return TEXTURE;
     }
 
 
     @Override
-    public Vector3d getRenderOffset(Npc pEntity, float pPartialTicks)
+    public Vector3d getRenderOffset(NPCEntity pEntity, float pPartialTicks)
     {
         return pEntity
             .isCrouching() ? new Vector3d(0.0D, -0.125D, 0.0D) : super.getRenderOffset(pEntity, pPartialTicks);
     }
 
 
-    private void setModelProperties(Npc pClientPlayer)
+    private void setModelProperties(NPCEntity pClientPlayer)
     {
-        NpcModel playermodel = this.getModel();
+        NPCModel playermodel = this.getModel();
         playermodel.crouching = pClientPlayer.isCrouching();
         BipedModel.ArmPose mainArmPose = getArmPose(pClientPlayer, Hand.MAIN_HAND);
         BipedModel.ArmPose offArmPose = getArmPose(pClientPlayer, Hand.OFF_HAND);
@@ -84,28 +85,28 @@ public class NpcRenderer extends MobRenderer<Npc, NpcModel>
 
 
     @Override
-    protected void scale(Npc pLivingEntity, MatrixStack pMatrixStack, float pPartialTickTime)
+    protected void scale(NPCEntity pLivingEntity, MatrixStack pMatrixStack, float pPartialTickTime)
     {
         pMatrixStack.scale(0.9375F, 0.9375F, 0.9375F);
     }
 
 
-    public void renderRightHand(MatrixStack pMatrixStack, IRenderTypeBuffer pBuffer, int pCombinedLight, Npc pPlayer)
+    public void renderRightHand(MatrixStack pMatrixStack, IRenderTypeBuffer pBuffer, int pCombinedLight, NPCEntity pPlayer)
     {
         this
             .renderHand(pMatrixStack, pBuffer, pCombinedLight, pPlayer, (this.model).rightArm, (this.model).rightSleeve);
     }
 
 
-    public void renderLeftHand(MatrixStack pMatrixStack, IRenderTypeBuffer pBuffer, int pCombinedLight, Npc pPlayer)
+    public void renderLeftHand(MatrixStack pMatrixStack, IRenderTypeBuffer pBuffer, int pCombinedLight, NPCEntity pPlayer)
     {
         this.renderHand(pMatrixStack, pBuffer, pCombinedLight, pPlayer, (this.model).leftArm, (this.model).leftSleeve);
     }
 
 
-    private void renderHand(MatrixStack pMatrixStack, IRenderTypeBuffer pBuffer, int pCombinedLight, Npc pPlayer, ModelRenderer pRendererArm, ModelRenderer pRendererArmwear)
+    private void renderHand(MatrixStack pMatrixStack, IRenderTypeBuffer pBuffer, int pCombinedLight, NPCEntity pPlayer, ModelRenderer pRendererArm, ModelRenderer pRendererArmwear)
     {
-        NpcModel playermodel = this.getModel();
+        NPCModel playermodel = this.getModel();
         this.setModelProperties(pPlayer);
         playermodel.attackTime = 0.0F;
         playermodel.crouching = false;
@@ -123,7 +124,7 @@ public class NpcRenderer extends MobRenderer<Npc, NpcModel>
 
 
     @Override
-    protected void setupRotations(Npc entity, MatrixStack matrix, float age, float yaw, float partialTicks)
+    protected void setupRotations(NPCEntity entity, MatrixStack matrix, float age, float yaw, float partialTicks)
     {
         float f = entity.getSwimAmount(partialTicks);
 
@@ -164,7 +165,7 @@ public class NpcRenderer extends MobRenderer<Npc, NpcModel>
     }
 
 
-    private static BipedModel.ArmPose getArmPose(Npc entity, Hand hand)
+    private static BipedModel.ArmPose getArmPose(NPCEntity entity, Hand hand)
     {
         ItemStack itemstack = entity.getItemInHand(hand);
         if (itemstack.isEmpty()) return BipedModel.ArmPose.EMPTY;

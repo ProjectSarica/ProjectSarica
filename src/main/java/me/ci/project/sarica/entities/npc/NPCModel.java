@@ -2,9 +2,9 @@ package me.ci.project.sarica.entities.npc;
 
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 
-public class NpcModel extends PlayerModel<Npc>
+public class NPCModel extends PlayerModel<NPCEntity>
 {
-    public NpcModel(boolean slim)
+    public NPCModel(boolean slim)
     {
         super(0f, slim);
     }
