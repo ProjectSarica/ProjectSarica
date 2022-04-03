@@ -19,8 +19,11 @@ import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+@Mod.EventBusSubscriber(modid = ProjectSarica.MOD_ID, bus = Bus.MOD)
 public final class ModEntities
 {
     public static final Lazy<EntityType<NPCEntity>> NPC = entity("npc", EntityType.Builder

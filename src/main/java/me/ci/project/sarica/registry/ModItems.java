@@ -4,12 +4,14 @@ import me.ci.project.sarica.ProjectSarica;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+@Mod.EventBusSubscriber(modid = ProjectSarica.MOD_ID, bus = Bus.MOD)
 public final class ModItems
 {
     public static final Lazy<Item> NPC_SPAWN_EGG = spawnEgg("npc_spawn_egg", ModEntities.NPC);
@@ -19,7 +21,7 @@ public final class ModItems
     {
         return Lazy.of(() ->
         {
-            Item.Properties spawnEggProperties = new Item.Properties().tab(ItemGroup.TAB_MISC);
+            Item.Properties spawnEggProperties = new Item.Properties().tab(ModItemGroups.DEBUG_ITEMS.get());
             SpawnEggItem spawnEgg = new SpawnEggItem(entityType.get(), 0xC5C5C5, 0x5EB1C8, spawnEggProperties);
             spawnEgg.setRegistryName(ProjectSarica.MOD_ID, name);
             return spawnEgg;
