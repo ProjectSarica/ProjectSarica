@@ -69,12 +69,18 @@ minecraft {
         }
 
         server {
+            taskName 'runServerBase'
+
             workingDirectory project.file(serverRunDir)
             property 'forge.logging.console.level', loggingLevel
 
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', refmapFile
             arg "-mixin.config=${mixinId}.mixins.json"
+
+            if (loggingANSI) {
+                property 'terminal.ansi', 'true'
+            }
 
             mods {
                 "${modId}" {
@@ -94,14 +100,18 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
-task setupDebugRunConfigs() {
-    description = 'Creates basic configs used to debug mods in game'
+task runServer() {
+    dependsOn 'setupServerConfigs'
+    dependsOn 'runServerBase'
+}
+
+task setupServerConfigs() {
     dependsOn 'configServerProps'
     dependsOn 'configEula'
 }
 
 task configServerProps(type: WriteProperties) {
-    description = 'Configures the server with default properties. Eg. Disables online mode.'
+    project.logger.lifecycle("Creating server properties file.")
     outputFile = file("${serverRunDir}/server.properties")
 
     property('online-mode', 'false')
@@ -118,7 +128,7 @@ task configServerProps(type: WriteProperties) {
 }
 
 task configEula(type: WriteProperties) {
-    description = 'Automatically creates and agrees to the Mojang account EULA.'
+    project.logger.lifecycle("Agreeing to Minecraft Eula")
     outputFile = file("${serverRunDir}/eula.txt")
     property 'eula', true
 
