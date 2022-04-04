@@ -36,3 +36,6 @@ build
 src/generated
 runClient
 runServer
+
+
+.settings
