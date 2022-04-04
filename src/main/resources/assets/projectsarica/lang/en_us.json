@@ -1,5 +1,7 @@
 {
   "item.projectsarica.npc_spawn_egg": "NPC Spawn Egg",
   "itemGroup.projectsarica.debug": "Project Sarica Debugging",
-  "entity.projectsarica.npc": "NPC"
+  "entity.projectsarica.npc": "NPC",
+  "argument.projectsarica.entity.wrong_type": "Invalid entity type, expected %s",
+  "command.projectsarica.moveto.action_not_cancelable": "The target's current action cannot be canceled. Cannot start a new action."
 }
