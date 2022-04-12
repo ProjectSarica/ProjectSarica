@@ -2,7 +2,7 @@ package me.ci.project.navi.world;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.ci.project.navi.util.CuboidIterator;
+import me.ci.project.mio.math.CuboidIterator;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
