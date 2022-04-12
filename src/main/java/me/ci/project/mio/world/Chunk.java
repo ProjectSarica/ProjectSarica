@@ -1,40 +1,39 @@
 package me.ci.project.mio.world;
 
 import java.util.Arrays;
-import org.joml.Vector3ic;
-import me.ci.project.mio.math.VectorUtils;
+import net.minecraft.util.math.BlockPos;
 
 public class Chunk
 {
 	private final BlockState[] blocks = new BlockState[16 * 16 * 16];
-	private final Vector3ic chunkIndex;
 
 
-	Chunk(Vector3ic chunkIndex)
+	Chunk()
 	{
-		this.chunkIndex = chunkIndex;
-
 		BlockState voidBlock = BlockStateRegistry.getBlockState("projectmio:void");
 		Arrays.fill(this.blocks, voidBlock);
 	}
 
 
-	BlockState getBlock(Vector3ic blockIndex)
+	private int blockPosIndex(BlockPos blockPos)
 	{
-		int index = VectorUtils.blockPosToIndex(blockIndex);
+		int x = blockPos.getX() & 15;
+		int y = blockPos.getY() & 15;
+		int z = blockPos.getZ() & 15;
+		return x * 16 * 16 + y * 16 + z;
+	}
+
+
+	BlockState getBlock(BlockPos blockPos)
+	{
+		int index = blockPosIndex(blockPos);
 		return this.blocks[index];
 	}
 
 
-	Vector3ic getChunkIndex()
+	void setBlock(BlockPos blockPos, BlockState block)
 	{
-		return this.chunkIndex;
-	}
-
-
-	void setBlock(Vector3ic blockIndex, BlockState block)
-	{
-		int index = VectorUtils.blockPosToIndex(blockIndex);
+		int index = blockPosIndex(blockPos);
 		this.blocks[index] = block;
 	}
 }

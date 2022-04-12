@@ -1,28 +1,36 @@
 package me.ci.project.mio.world;
 
-import org.joml.Vector3ic;
-import me.ci.project.mio.math.VectorUtils;
+import net.minecraft.util.math.BlockPos;
 
 class Region
 {
 	private final Chunk[] chunks = new Chunk[16 * 16 * 16];
-	private final Vector3ic regionIndex;
+	private final BlockPos regionPos;
 	private int loadedChunks = 0;
 
 
-	Region(Vector3ic regionIndex)
+	Region(BlockPos regionPos)
 	{
-		this.regionIndex = regionIndex;
+		this.regionPos = regionPos;
 	}
 
 
-	Chunk getChunk(Vector3ic chunkIndex, boolean create)
+	private int chunkPosIndex(BlockPos chunkPos)
 	{
-		int index = VectorUtils.blockPosToIndex(chunkIndex);
+		int x = chunkPos.getX() & 15;
+		int y = chunkPos.getY() & 15;
+		int z = chunkPos.getZ() & 15;
+		return x * 16 * 16 + y * 16 + z;
+	}
+
+
+	Chunk getChunk(BlockPos chunkPos, boolean create)
+	{
+		int index = chunkPosIndex(chunkPos);
 
 		if (this.chunks[index] == null && create)
 		{
-			this.chunks[index] = new Chunk(VectorUtils.maskBlockPos(chunkIndex));
+			this.chunks[index] = new Chunk();
 			this.loadedChunks++;
 		}
 
@@ -36,15 +44,15 @@ class Region
 	}
 
 
-	Vector3ic getRegionIndex()
+	BlockPos getRegionPos()
 	{
-		return this.regionIndex;
+		return this.regionPos;
 	}
 
 
-	void unloadChunk(Vector3ic chunkIndex)
+	void unloadChunk(BlockPos chunkPos)
 	{
-		int index = VectorUtils.blockPosToIndex(chunkIndex);
+		int index = chunkPosIndex(chunkPos);
 		this.chunks[index] = null;
 		this.loadedChunks--;
 	}
