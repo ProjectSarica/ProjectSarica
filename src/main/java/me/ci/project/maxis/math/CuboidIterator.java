@@ -1,4 +1,4 @@
-package me.ci.project.mio.math;
+package me.ci.project.maxis.math;
 
 import java.util.Iterator;
 import net.minecraft.util.math.AxisAlignedBB;

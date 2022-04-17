@@ -1,4 +1,4 @@
-package me.ci.project.mio.world;
+package me.ci.project.maxis;
 
 public class BlockCollision
 {

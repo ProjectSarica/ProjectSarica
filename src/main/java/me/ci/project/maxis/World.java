@@ -1,4 +1,4 @@
-package me.ci.project.mio.world;
+package me.ci.project.maxis;
 
 import java.util.HashSet;
 import java.util.Optional;
