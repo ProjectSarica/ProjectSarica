@@ -34,8 +34,7 @@ public final class ModifiedWorld implements IWorld
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj == null
-			|| !(obj instanceof ModifiedWorld)) return false;
+		if (obj == null || !(obj instanceof ModifiedWorld)) return false;
 
 		ModifiedWorld world = (ModifiedWorld) obj;
 		return this.modifications.equals(world.modifications);
@@ -58,6 +57,7 @@ public final class ModifiedWorld implements IWorld
 	}
 
 
+	@Override
 	public void setBlock(BlockPos pos, IBlockState state)
 	{
 		this.modifications.put(pos, state);
@@ -65,14 +65,24 @@ public final class ModifiedWorld implements IWorld
 	}
 
 
+	@Override
+	public void setChunk(BlockPos chunkPos, IBlockState[] blockStates)
+	{
+		throw new UnsupportedOperationException("Cannot batch assign blocks in future world!");
+	}
+
+
+	@Override
+	public void unloadChunk(BlockPos chunkPos)
+	{
+		throw new UnsupportedOperationException("Cannot unload chunks in future world!");
+	}
+
+
 	private void updateModHash()
 	{
 		this.modHash = 5;
-
 		for (BlockPos pos : this.modifications.keySet())
-		{
 			this.modHash = this.modHash * 21 + Objects.hash(pos, this.modifications.get(pos));
-		}
-
 	}
 }

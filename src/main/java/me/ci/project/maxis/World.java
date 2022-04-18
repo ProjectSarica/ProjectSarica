@@ -3,6 +3,7 @@ package me.ci.project.maxis;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import me.ci.project.mio.world.IBlockState;
 import me.ci.project.mio.world.IWorld;
 import net.minecraft.util.math.BlockPos;
 
@@ -27,7 +28,7 @@ public final class World implements IWorld
 
 
 	@Override
-	public BlockState getBlock(BlockPos blockPos)
+	public IBlockState getBlock(BlockPos blockPos)
 	{
 		Chunk chunk = getChunk(blockPosToChunkPos(blockPos), false);
 		if (chunk == null) return BlockStateRegistry.getBlockState("projectmio:void");
@@ -60,13 +61,23 @@ public final class World implements IWorld
 	}
 
 
-	public void setBlock(BlockPos blockPos, BlockState blockState)
+	@Override
+	public void setBlock(BlockPos blockPos, IBlockState blockState)
 	{
 		Chunk chunk = getChunk(blockPosToChunkPos(blockPos), true);
 		chunk.setBlock(blockPos, blockState);
 	}
 
 
+	@Override
+	public void setChunk(BlockPos chunkPos, IBlockState[] blockStates)
+	{
+		Chunk chunk = getChunk(chunkPos, true);
+		chunk.setBlocks(blockStates);
+	}
+
+
+	@Override
 	public void unloadChunk(BlockPos chunkPos)
 	{
 		Region region = getRegion(chunkPosToRegionPos(chunkPos), false);

@@ -1,11 +1,12 @@
 package me.ci.project.maxis;
 
 import java.util.Arrays;
+import me.ci.project.mio.world.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
 public class Chunk
 {
-	private final BlockState[] blocks = new BlockState[16 * 16 * 16];
+	private final IBlockState[] blocks = new IBlockState[16 * 16 * 16];
 
 
 	Chunk()
@@ -24,16 +25,25 @@ public class Chunk
 	}
 
 
-	BlockState getBlock(BlockPos blockPos)
+	IBlockState getBlock(BlockPos blockPos)
 	{
 		int index = blockPosIndex(blockPos);
 		return this.blocks[index];
 	}
 
 
-	void setBlock(BlockPos blockPos, BlockState block)
+	void setBlock(BlockPos blockPos, IBlockState block)
 	{
 		int index = blockPosIndex(blockPos);
 		this.blocks[index] = block;
+	}
+
+
+	void setBlocks(IBlockState[] blocks)
+	{
+		if (blocks.length != this.blocks.length) throw new IllegalArgumentException("Blocks array must equal 4096!");
+
+		for (int i = 0; i < blocks.length; i++)
+			this.blocks[i] = blocks[i];
 	}
 }
