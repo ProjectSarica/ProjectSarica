@@ -3,18 +3,20 @@ package me.ci.project.maxis;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import me.ci.project.mio.world.IBlockState;
+import net.minecraft.util.math.shapes.VoxelShape;
 
-public class BlockState
+public class BlockState implements IBlockState
 {
 	private final Map<String, String> properties = new HashMap<>();
 	private final String namespace;
 	private final String name;
 	private final String registryName;
-	private final BlockCollision collision;
+	private final VoxelShape collision;
 	private final int hash;
 
 
-	BlockState(String namespace, String name, Map<String, String> properties, BlockCollision collision)
+	BlockState(String namespace, String name, Map<String, String> properties, VoxelShape collision)
 	{
 		this.namespace = namespace;
 		this.name = name;
@@ -43,7 +45,8 @@ public class BlockState
 	}
 
 
-	public BlockCollision getCollision()
+	@Override
+	public VoxelShape getCollision()
 	{
 		return this.collision;
 	}
@@ -61,12 +64,14 @@ public class BlockState
 	}
 
 
+	@Override
 	public String getProperty(String property)
 	{
 		return this.properties.get(property);
 	}
 
 
+	@Override
 	public String getRegistryName()
 	{
 		return this.registryName;
@@ -80,6 +85,7 @@ public class BlockState
 	}
 
 
+	@Override
 	public boolean hasProperty(String property)
 	{
 		return this.properties.containsKey(property);

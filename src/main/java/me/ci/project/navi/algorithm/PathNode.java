@@ -2,7 +2,7 @@ package me.ci.project.navi.algorithm;
 
 import java.util.Objects;
 import javax.annotation.Nullable;
-import me.ci.project.navi.world.IWorldContext;
+import me.ci.project.mio.world.IWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 
@@ -13,7 +13,7 @@ import net.minecraft.util.math.vector.Vector3d;
  */
 public class PathNode
 {
-	private final IWorldContext world;
+	private final IWorld world;
 	private final BlockPos position;
 	private IMovement movement = null;
 	private PathNode parent;
@@ -22,7 +22,7 @@ public class PathNode
 	float fScore = Float.POSITIVE_INFINITY;
 
 
-	PathNode(IWorldContext world, BlockPos position)
+	PathNode(IWorld world, BlockPos position)
 	{
 		this.world = world;
 		this.position = position;
@@ -76,7 +76,7 @@ public class PathNode
 	}
 
 
-	public IWorldContext getWorldContext()
+	public IWorld getWorld()
 	{
 		return this.world;
 	}

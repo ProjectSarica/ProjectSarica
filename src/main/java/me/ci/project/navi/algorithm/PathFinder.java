@@ -3,12 +3,11 @@ package me.ci.project.navi.algorithm;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
+import me.ci.project.mio.world.IWorld;
 import me.ci.project.navi.ProjectNavi;
 import me.ci.project.navi.goals.IGoal;
-import me.ci.project.navi.world.WorldBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class PathFinder
 {
@@ -18,12 +17,11 @@ public class PathFinder
 	}
 
 
-	public static Path findPath(MovementNetwork movements, World world, Entity entity, IGoal goal, BlockPos start)
+	public static Path findPath(MovementNetwork movements, IWorld world, Entity entity, IGoal goal, BlockPos start)
 	{
 		long time = System.currentTimeMillis();
 
-		WorldBase worldBase = new WorldBase(world, entity);
-		PathNode startNode = new PathNode(worldBase, start);
+		PathNode startNode = new PathNode(world, start);
 		PathFinder pathfinder = new PathFinder(movements, goal, startNode);
 		Path path = pathfinder.findPath();
 

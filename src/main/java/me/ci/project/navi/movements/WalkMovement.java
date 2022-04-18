@@ -1,11 +1,11 @@
 package me.ci.project.navi.movements;
 
 import java.util.List;
+import me.ci.project.mio.world.IWorld;
 import me.ci.project.navi.algorithm.IMovement;
 import me.ci.project.navi.algorithm.MovementType;
 import me.ci.project.navi.algorithm.PathNode;
 import me.ci.project.navi.algorithm.PathNodeContext;
-import me.ci.project.navi.world.IWorldContext;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -30,15 +30,15 @@ public class WalkMovement implements IMovement
 	}
 
 
-	private static boolean isSolid(IWorldContext worldContext, BlockPos pos)
+	private static boolean isSolid(IWorld world, BlockPos pos)
 	{
-		return !worldContext.getBlock(pos).getCollisionShape(worldContext.getMCWorld(), pos).isEmpty();
+		return !world.getBlock(pos).getCollision().isEmpty();
 	}
 
 
 	private static void tryWalk(PathNode node, PathNodeContext nodeContext, List<IMovement> movements, Direction rel)
 	{
-		IWorldContext worldContext = node.getWorldContext();
+		IWorld worldContext = node.getWorld();
 		BlockPos relPos = node.getPosition().relative(rel);
 
 		if (isSolid(worldContext, relPos)

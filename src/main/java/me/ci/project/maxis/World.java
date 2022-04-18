@@ -3,9 +3,10 @@ package me.ci.project.maxis;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import me.ci.project.mio.world.IWorld;
 import net.minecraft.util.math.BlockPos;
 
-public class World
+public final class World implements IWorld
 {
 	private final Set<Region> regions = new HashSet<>();
 
@@ -25,6 +26,7 @@ public class World
 	}
 
 
+	@Override
 	public BlockState getBlock(BlockPos blockPos)
 	{
 		Chunk chunk = getChunk(blockPosToChunkPos(blockPos), false);
